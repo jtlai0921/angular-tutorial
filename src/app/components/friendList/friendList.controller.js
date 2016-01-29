@@ -8,6 +8,6 @@
   /** @ngInject */
   function FriendListController(chatData) {
     var vm = this;
-    vm.friends = chatData.getFriends();
+    vm.friends = chatData.getData();
   }
 }());
