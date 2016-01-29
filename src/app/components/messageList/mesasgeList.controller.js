@@ -7,7 +7,13 @@
   /*@ngInject*/
   function MessageListController (chatData, _) {
     var vm = this;
-    vm.chat = chatData.getData()[0];
-    vm.messages = _.reverse(vm.chat.messages);
+    vm.getChat = function() {
+      return _.find(chatData.getData(), function(c) { return c.current === true; });
+    }
+
+    vm.getMessages = function() {
+      var chat = vm.getChat();
+      return chat ? chat.messages : [];
+    }
   }
 }());
