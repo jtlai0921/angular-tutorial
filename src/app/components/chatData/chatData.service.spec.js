@@ -52,5 +52,19 @@
       });
     });
 
+    describe('#setCurrent(chat)', function(){
+      it('sets the given chat as `current`', function(){
+        var chat = chatData.getData()[0];
+        chatData.setCurrent(chat);
+
+        expect(chatData.getData()[0].current).toEqual(true);
+      });
+      it('does nothing if given chat is not in chat pool', function(){
+        var misgivenChat = { key: 'val' };
+        chatData.setCurrent(misgivenChat);
+
+        expect(misgivenChat.current).toEqual(undefined);
+      });
+    });
   });
 })();
