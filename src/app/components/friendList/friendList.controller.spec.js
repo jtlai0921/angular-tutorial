@@ -12,10 +12,10 @@
     }));
 
     describe('#friends', function(){
-      it('returns the result of chatData#getFriends()', function(){
+      it('returns the result of chatData#getData()', function(){
         var controller;
-        var friends = [ { name: 'MockFriend' } ];
-        spyOn(chatData, 'getFriends').and.returnValue(friends);
+        var friends = [ { name: 'MockFriend' }, { name: 'MockFriend2' } ];
+        spyOn(chatData, 'getData').and.returnValue(friends);
         controller = $controller('FriendListController');
 
         expect(controller.friends).toEqual(friends);
