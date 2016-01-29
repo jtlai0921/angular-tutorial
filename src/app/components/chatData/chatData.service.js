@@ -5,7 +5,7 @@
     .factory('chatData', chatDataFactory);
 
   /** @ngInject */
-  function chatDataFactory () {
+  function chatDataFactory (_) {
     var now = 1454058347566;
     var data = [
       {
@@ -43,6 +43,16 @@
     return {
       getData: function() {
         return data;
+      },
+      setCurrent: function(chat) {
+        var matchedChat = _.find(data, function(d) {
+          return chat === d;
+        });
+        if (matchedChat) {
+          _.each(data, function(d) { d.current = false; })
+          matchedChat.current = true;
+        }
+
       }
     };
   }

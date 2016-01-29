@@ -8,6 +8,9 @@
   /** @ngInject */
   function FriendListController(chatData) {
     var vm = this;
-    vm.friends = chatData.getData();
+    vm.chats = chatData.getData();
+    vm.setCurrent = function(chat) {
+      chatData.setCurrent(chat);
+    }
   }
 }());

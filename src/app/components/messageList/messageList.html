@@ -1,6 +1,6 @@
 <div class="col-md-8">
-  <h2>Message With {{ messageListCtrl.chat.name }}</h2>
-  <div ng-repeat="message in messageListCtrl.chat.messages">
+  <h2>Message With {{ messageListCtrl.getChat().name }}</h2>
+  <div ng-repeat="message in messageListCtrl.getMessages()">
     {{ message.content }}
   </div>
 </div>

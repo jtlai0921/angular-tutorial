@@ -1,5 +1,8 @@
 <ul class="friend-list col-md-4">
-  <li class="friend-list__friend" ng-repeat="friend in friendListCtrl.friends">
-    {{ friend.name }}
+  <li class="friend-list__friend"
+    ng-click="friendListCtrl.setCurrent(chat)"
+    ng-class="{ 'friend-list__friend--current': chat.current }"
+    ng-repeat="chat in friendListCtrl.chats">
+    {{ chat.name }}
   </li>
 </ul>
