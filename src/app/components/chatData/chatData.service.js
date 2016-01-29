@@ -49,6 +49,7 @@
           return chat === d;
         });
         if (matchedChat) {
+          _.each(data, function(d) { d.current = false; })
           matchedChat.current = true;
         }
 

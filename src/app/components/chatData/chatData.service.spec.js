@@ -59,6 +59,17 @@
 
         expect(chatData.getData()[0].current).toEqual(true);
       });
+      it('unsets other chat.current to false', function(){
+        var chat;
+        chat = chatData.getData()[0];
+        chatData.setCurrent(chat);
+
+        chat = chatData.getData()[1];
+        chatData.setCurrent(chat);
+
+        expect(chatData.getData()[0].current).toEqual(false);
+        expect(chatData.getData()[1].current).toEqual(true);
+      });
       it('does nothing if given chat is not in chat pool', function(){
         var misgivenChat = { key: 'val' };
         chatData.setCurrent(misgivenChat);
