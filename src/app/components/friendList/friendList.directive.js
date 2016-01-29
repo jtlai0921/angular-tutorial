@@ -10,17 +10,12 @@
     var directive = {
       restrict: 'E',
       templateUrl: 'app/components/friendList/friendList.html',
-      controller: FriendListController,
+      controller: 'FriendListController',
       controllerAs: 'friendListCtrl',
       bindToController: true
     };
 
     return directive;
-
-    /** @ngInject */
-    function FriendListController(chatData) {
-      this.friends = chatData.getFriends();
-    }
   }
 
 })();

@@ -5,10 +5,10 @@
     .factory('chatData', chatDataFactory);
 
   /** @ngInject */
-  function chatDataFactory ($interval) {
+  function chatDataFactory () {
     var friends = [
       { name: 'Jack' },
-      { name: 'Mary' },
+      { name: 'Mary' }
     ];
 
     return {
