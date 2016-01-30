@@ -21,9 +21,9 @@
                       return auth.$authWithPassword(params);
                     })
                     .then(function(authData) {
-                      if (name) {
-                        ref.child('users').child(authData.uid).set({ name: name })
-                      }
+                        ref.child('users')
+                          .child(authData.uid)
+                          .set({ name: name || email, uid: authData.uid })
                     });
       return promise;
     }
@@ -35,7 +35,9 @@
       var promise = auth.$authWithPassword(params)
                         .then(function(authData) {
                           if (name) {
-                            ref.child('users').child(authData.uid).set({ name: name })
+                            ref.child('users')
+                              .child(authData.uid)
+                              .set({ name: name, uid: authData.uid })
                           }
                         });
       return promise;

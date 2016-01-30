@@ -12,8 +12,9 @@
     }
 
     vm.getMessages = function() {
-      var chat = vm.getChat();
-      return chat ? chat.messages : [];
+      return chatData.getMessages();
+      // var chat = vm.getChat();
+      // return chat ? chat.messages : [];
     }
   }
 }());

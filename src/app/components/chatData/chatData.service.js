@@ -5,67 +5,49 @@
     .factory('chatData', chatDataFactory);
 
   /** @ngInject */
-  function chatDataFactory (_) {
-    var now = 1454058347566;
-    var data = [
-      {
-        name: 'Jack',
-        messages: [
-          {
-            content: "Hi there, how's it going?",
-            fromMe: true,
-            sentAt: now - 60*1000
-          },
-          {
-            content: 'Hello Im Jack',
-            fromMe: false,
-            sentAt: now - 60*2000
-          }
-        ]
-      },
-      {
-        name: 'Mary',
-        messages: [
-          {
-            content: 'Hello Im Mary',
-            fromMe: false,
-            sentAt: now - 60*3000
-          },
-          {
-            content: "Hi, who are you",
-            fromMe: true,
-            sentAt: now - 60*4000
-          }
-        ]
-      }
-    ];
+  function chatDataFactory (_, $rootScope, firebaseRef, $firebaseArray, auth) {
+    var $scope = $rootScope.$new();
 
-    function currentChat () {
-      return _.find(data, function(d) {
-        return d.current === true;
-      });
-    }
     function getNow () {
       return new Date().getTime();
     }
 
-    return {
-      getData: function() {
-        return data;
-      },
-      setCurrent: function(chat) {
-        var matchedChat = _.find(data, function(d) {
-          return chat === d;
-        });
-        if (matchedChat) {
-          _.each(data, function(d) { d.current = false; })
-          matchedChat.current = true;
-        }
+    function chatIdWith (uid) {
+      return [uid, auth.getUid()].sort().reverse().join('---');
+    }
+    var currentUserId = null;
 
+    $scope.users = $firebaseArray(firebaseRef.child('users'));
+    $scope.messages = [];
+
+    return {
+      getUsers: function() {
+        return $scope.users;
       },
+      getMessages: function() {
+        return $scope.messages;
+      },
+      setCurrent: function(uid) {
+        if ( _.find($scope.users, function(u) { return u.uid === uid }) ) {
+          currentUserId = uid;
+          $scope.messages = $firebaseArray(firebaseRef.child('messages')
+                                           .child(chatIdWith(currentUserId)));
+        }
+      },
+      getCurrent: function() {
+        return currentUserId;
+      },
+
       sendChat: function(message) {
-        var chat = currentChat();
-        chat.messages.push({ content: message, sentAt: getNow(), fromMe: true });
+        if (!currentUserId) {
+          return;
+        }
+        $scope.messages.$add({
+          content: message,
+          sentAt: getNow(),
+          sender: auth.getUid(),
+          receiver: currentUserId
+        });
       }
     };
   }

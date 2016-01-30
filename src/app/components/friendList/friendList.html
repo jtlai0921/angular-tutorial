@@ -1,8 +1,8 @@
 <ul class="friend-list">
   <li class="friend-list__friend"
-    ng-click="friendListCtrl.setCurrent(chat)"
-    ng-class="{ 'friend-list__friend--current': chat.current }"
-    ng-repeat="chat in friendListCtrl.chats">
-    {{ chat.name }}
+    ng-click="friendListCtrl.setCurrent(user)"
+    ng-class="{ 'friend-list__friend--current': friendListCtrl.getCurrent() === user.uid }"
+    ng-repeat="user in friendListCtrl.users">
+    {{ user.name }}
   </li>
 </ul>
