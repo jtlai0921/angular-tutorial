@@ -1,96 +1,102 @@
 (function() {
   'use strict';
 
-  describe('service chatData', function() {
-    var chatData, _;
+  fdescribe('service chatData', function() {
+    var chatData, firebaseRef, auth;
+    var usersFbArray, usersRef, messagesFbArray, messagesRef;
+
+    var user1 = { uid: 'uid-1' },
+      user2 = { uid: 'uid-2' };
+    var message1 = { content: 1 },
+      message2 = { content: 2 };
 
     beforeEach(module('angularTutorial'));
+    beforeEach(module(function($provide) {
+      usersRef = {};
+      usersFbArray = [user1, user2];
+      messagesRef = { child: function() { return messagesRef; } };
+      messagesFbArray = [message1, message2];
 
-    beforeEach(inject(function(_chatData_, ___) {
-      chatData = _chatData_;
-      _ = ___;
+      var $firebaseArray = function(ref) {
+        return ref === messagesRef ? messagesFbArray : usersFbArray;
+      }
+      $provide.value('$firebaseArray', $firebaseArray);
+      return;
     }));
+
+    beforeEach(inject(function(_firebaseRef_, _auth_) {
+      firebaseRef = _firebaseRef_;
+      auth = _auth_;
+    }));
+
+    beforeEach(function(){
+      spyOn(firebaseRef, 'child').and.callFake(function(path) {
+        return path === 'users' ? usersRef : messagesRef;
+      });
+      spyOn(auth, 'getUid').and.returnValue('my-uid');
+    });
 
     it('should be registered', function(){
       expect(chatData).not.toEqual(null);
     });
 
-    describe('#getData()', function(){
-      it('returns an array of mock data', function(){
-        var now = 1454058347566;
-        expect(chatData.getData()).toEqual([
-          {
-            name: 'Jack',
-            messages: [
-              {
-                content: "Hi there, how's it going?",
-                fromMe: true,
-                sentAt: now - 60*1000
-              },
-              {
-                content: 'Hello Im Jack',
-                fromMe: false,
-                sentAt: now - 60*2000
-              }
-            ]
-          },
-          {
-            name: 'Mary',
-            messages: [
-              {
-                content: 'Hello Im Mary',
-                fromMe: false,
-                sentAt: now - 60*3000
-              },
-              {
-                content: "Hi, who are you",
-                fromMe: true,
-                sentAt: now - 60*4000
-              }
-            ]
-          }
-        ])
+    describe('#getUsers()', function(){
+      it('returns a firebase array of `users` path', function(){
+        inject(function(chatData) {
+          var users = chatData.getUsers();
+
+          expect(firebaseRef.child).toHaveBeenCalledWith('users');
+          expect(users).toEqual([user1, user2]);
+        })
       });
     });
 
-    describe('#setCurrent(chat)', function(){
-      it('sets the given chat as `current`', function(){
-        var chat = chatData.getData()[0];
-        chatData.setCurrent(chat);
 
-        expect(chatData.getData()[0].current).toEqual(true);
-      });
-      it('unsets other chat.current to false', function(){
-        var chat;
-        chat = chatData.getData()[0];
-        chatData.setCurrent(chat);
+    describe('Current chat behaviors', function(){
+      describe('#setCurrent(uid)', function(){
+        it('sets current user with uid', function(){
+          inject(function(chatData) {
+            chatData.setCurrent('uid-1');
 
-        chat = chatData.getData()[1];
-        chatData.setCurrent(chat);
-
-        expect(chatData.getData()[0].current).toEqual(false);
-        expect(chatData.getData()[1].current).toEqual(true);
-      });
-      it('does nothing if given chat is not in chat pool', function(){
-        var misgivenChat = { key: 'val' };
-        chatData.setCurrent(misgivenChat);
-
-        expect(misgivenChat.current).toEqual(undefined);
+            expect(chatData.getCurrent()).toEqual('uid-1');
+          });
+        });
+        it('fetches messages of composit uid', function(){
+          spyOn(messagesRef, 'child').and.callThrough();
+          inject(function(chatData) {
+            chatData.setCurrent('uid-1');
+            expect(messagesRef.child).toHaveBeenCalledWith('uid-1---my-uid');
+            expect(chatData.getMessages()).toEqual([message1, message2]);
+          });
+        });
+        it('not fetches messages if uid not in users list', function(){
+          spyOn(messagesRef, 'child').and.callThrough();
+          inject(function(chatData) {
+            chatData.setCurrent('uid-unexist');
+            expect(messagesRef.child).not.toHaveBeenCalled();
+            expect(chatData.getMessages()).toEqual([]);
+          });
+        });
       });
     });
+
 
     describe('#sendChat(message)', function(){
-      var chat;
-      beforeEach(function(){
-        chat = chatData.getData()[0];
-        chatData.setCurrent(chat);
-      });
-      it('push chat message into current user', function(){
-        chatData.sendChat('hello');
-
-        expect(_.last(chat.messages).content).toEqual('hello');
+      it('adds chat to messages firebase array', function(){
+        var chat;
+        messagesFbArray.$add = function(c) {
+          chat = c
+        };
+        inject(function(chatData) {
+          chatData.setCurrent('uid-1');
+          chatData.sendChat('the-message');
+          expect(chat.content).toEqual('the-message');
+          expect(chat.sender).toEqual('my-uid');
+          expect(chat.receiver).toEqual('uid-1');
+        })
       });
     });
+
 
   });
 })();
