@@ -53,6 +53,9 @@
           matchedChat.current = true;
         }
 
+      },
+      sendChat: function(text) {
+        // TODO
       }
     };
   }
