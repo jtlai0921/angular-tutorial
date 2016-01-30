@@ -1,1 +1,6 @@
-auth
+<form>
+  <input ng-model="authController.name" type="text" placeholder="name" />
+  <input ng-model="authController.email" type="email" placeholder="email" />
+  <input ng-model="authController.password" type="password" placeholder="password" />
+  <button ng-click="authController.submit()">submit</button>
+</form>

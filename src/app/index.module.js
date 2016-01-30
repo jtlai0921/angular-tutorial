@@ -2,6 +2,6 @@
   'use strict';
 
   angular
-    .module('angularTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngResource', 'ui.router', 'toastr']);
+    .module('angularTutorial', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngResource', 'ui.router', 'toastr', 'firebase']);
 
 })();
