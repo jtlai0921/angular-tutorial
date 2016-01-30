@@ -4,9 +4,9 @@
   angular.module('angularTutorial')
     .factory('auth', authFactory);
 
-  function authFactory (firebaseEndpoint, $firebaseAuth) {
-    var ref = new Firebase(firebaseEndpoint);
-    window.ref = ref;
+  /** @ngInject */
+  function authFactory (firebaseRef, $firebaseAuth) {
+    var ref = firebaseRef
 
     function isLoggedIn () {
       return !!ref.getAuth();
@@ -17,7 +17,7 @@
       var params = { email: email, password: password };
 
       var promise = auth.$createUser(params)
-                    .then(function(authData) {
+                    .then(function() {
                       return auth.$authWithPassword(params);
                     })
                     .then(function(authData) {
