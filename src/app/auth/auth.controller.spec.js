@@ -19,7 +19,7 @@
       expect($state.go).toHaveBeenCalledWith('home');
     });
 
-    describe('#submit()', function(){
+    describe('#registerAndLogin()', function(){
       var controller
       var email = 'the-email@test.com',
           password = 'the-secret',
@@ -42,24 +42,24 @@
       });
 
       it('invokes auth.registerAndLogin with email, password, name', function(){
-        controller.submit();
+        controller.registerAndLogin();
 
         expect(auth.registerAndLogin).toHaveBeenCalledWith(email, password, name);
       });
       it('goes to home state after success', inject(function($rootScope){
-        controller.submit();
+        controller.registerAndLogin();
         deferred.resolve();
         $rootScope.$apply();
 
         expect($state.go).toHaveBeenCalledWith('home');
       }));
       it('sets error message if error', inject(function($rootScope){
-        var errorMessage = 'the-error';
-        controller.submit();
-        deferred.reject(errorMessage);
+        var error = { message: 'the-error'};
+        controller.registerAndLogin();
+        deferred.reject(error);
         $rootScope.$apply();
 
-        expect(controller.errorMessage).toEqual(errorMessage);
+        expect(controller.errorMessage).toEqual(error.message);
       }));
 
     });

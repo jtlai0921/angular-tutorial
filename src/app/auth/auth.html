@@ -1,6 +1,8 @@
-<form>
-  <input ng-model="authController.name" type="text" placeholder="name" />
-  <input ng-model="authController.email" type="email" placeholder="email" />
-  <input ng-model="authController.password" type="password" placeholder="password" />
-  <button ng-click="authController.submit()">submit</button>
+<form class="auth-form">
+  <input class="auth-form__input" ng-model="authController.name" type="text" placeholder="name" />
+  <input class="auth-form__input" ng-model="authController.email" type="email" placeholder="email" />
+  <input class="auth-form__input" ng-model="authController.password" type="password" placeholder="password" />
+  <p ng-show="authController.errorMessage">{{ authController.errorMessage }}</p>
+  <button class="auth-form__btn btn" ng-click="authController.registerAndLogin()">Register and Login</button>
+  <button class="auth-form__btn btn" ng-click="authController.login()">Login</button>
 </form>

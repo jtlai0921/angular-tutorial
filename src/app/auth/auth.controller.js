@@ -12,13 +12,13 @@
     }
 
     var vm = this;
-    vm.submit = function() {
+    vm.registerAndLogin = function() {
       auth.registerAndLogin(vm.email, vm.password, vm.name)
         .then(function() {
           $state.go('home');
         })
         .catch(function(err) {
-          vm.errorMessage = err;
+          vm.errorMessage = err.message;
         })
     }
   }
