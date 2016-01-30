@@ -5,8 +5,9 @@
     .factory('chatData', chatDataFactory);
 
   /** @ngInject */
-  function chatDataFactory (_, $rootScope, firebaseRef, $firebaseArray, auth) {
-    var $scope = $rootScope.$new();
+  function chatDataFactory (_, firebaseRef, $firebaseArray, auth) {
+    var users, messages;
+    messages = [];
 
     function getNow () {
       return new Date().getTime();
@@ -17,25 +18,24 @@
     }
     var currentUserId = null;
 
-    $scope.users = $firebaseArray(firebaseRef.child('users'));
-    $scope.users.$loaded().then(function(users) {
+    users = $firebaseArray(firebaseRef.child('users'));
+    users.$loaded().then(function(users) {
       if (users.length) {
         toReturn.setCurrent(users[0].uid);
       }
     })
-    $scope.messages = [];
 
     var toReturn = {
       getUsers: function() {
-        return $scope.users;
+        return users;
       },
       getMessages: function() {
-        return $scope.messages;
+        return messages;
       },
       setCurrent: function setCurrent(uid) {
-        if ( _.find($scope.users, function(u) { return u.uid === uid }) ) {
+        if ( _.find(users, function(u) { return u.uid === uid }) ) {
           currentUserId = uid;
-          $scope.messages = $firebaseArray(firebaseRef.child('messages')
+          messages = $firebaseArray(firebaseRef.child('messages')
                                            .child(chatIdWith(currentUserId)));
         }
       },
@@ -47,7 +47,7 @@
         if (!currentUserId) {
           return;
         }
-        $scope.messages.$add({
+        messages.$add({
           content: message,
           sentAt: getNow(),
           sender: auth.getUid(),
