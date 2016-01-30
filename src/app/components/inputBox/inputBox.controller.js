@@ -6,8 +6,17 @@
 
   function InputBoxController (chatData) {
     var vm = this;
-    vm.submit = function(text) {
-      chatData.sendChat(text);
+
+    vm.message = '';
+    vm.submit = function() {
+      var message = vm.message;
+
+      if (message) {
+        chatData.sendChat(message);
+        vm.message = '';
+      } else {
+        return;
+      }
     }
   }
 }());

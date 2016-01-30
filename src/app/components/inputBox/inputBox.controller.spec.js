@@ -15,13 +15,29 @@
     beforeEach(function(){
       controller = $controller('InputBoxController');
     });
-    describe('#submit(text)', function(){
-      it('invokes chatData.sendChat with text', function(){
-        var text = 'this is chat message';
+    describe('#submit()', function(){
+      var message
+      beforeEach(function(){
+        message = 'this is chat message';
+        controller.message = message;
         spyOn(chatData, 'sendChat');
-        controller.submit(text);
+      });
+      it('invokes chatData.sendChat with controller message', function(){
+        controller.submit();
 
-        expect(chatData.sendChat).toHaveBeenCalledWith(text);
+        expect(chatData.sendChat).toHaveBeenCalledWith(message);
+      });
+
+      it('clear controller message after sending', function(){
+        controller.submit();
+
+        expect(controller.message).toEqual('');
+      });
+      it('does nothing if no message', function(){
+        controller.message = '';
+        controller.submit();
+
+        expect(chatData.sendChat).not.toHaveBeenCalled();
       });
     });
   });
