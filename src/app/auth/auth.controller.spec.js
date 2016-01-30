@@ -34,6 +34,7 @@
         spyOn($state, 'go');
         spyOn(auth, 'isLoggedIn').and.returnValue(false);
         spyOn(auth, 'registerAndLogin').and.returnValue(deferred.promise);
+        spyOn(auth, 'login').and.returnValue(deferred.promise);
         controller = $controller('AuthController');
 
         controller.email = email;
@@ -41,26 +42,53 @@
         controller.name = name;
       });
 
-      it('invokes auth.registerAndLogin with email, password, name', function(){
-        controller.registerAndLogin();
+      describe('#registerAndLogin(email, password, name)', function(){
+        it('invokes auth.registerAndLogin with email, password, name', function(){
+          controller.registerAndLogin();
 
-        expect(auth.registerAndLogin).toHaveBeenCalledWith(email, password, name);
+          expect(auth.registerAndLogin).toHaveBeenCalledWith(email, password, name);
+        });
+        it('goes to home state after success', inject(function($rootScope){
+          controller.registerAndLogin();
+          deferred.resolve();
+          $rootScope.$apply();
+
+          expect($state.go).toHaveBeenCalledWith('home');
+        }));
+        it('sets error message if error', inject(function($rootScope){
+          var error = { message: 'the-error'};
+          controller.registerAndLogin();
+          deferred.reject(error);
+          $rootScope.$apply();
+
+          expect(controller.errorMessage).toEqual(error.message);
+        }));
       });
-      it('goes to home state after success', inject(function($rootScope){
-        controller.registerAndLogin();
-        deferred.resolve();
-        $rootScope.$apply();
 
-        expect($state.go).toHaveBeenCalledWith('home');
-      }));
-      it('sets error message if error', inject(function($rootScope){
-        var error = { message: 'the-error'};
-        controller.registerAndLogin();
-        deferred.reject(error);
-        $rootScope.$apply();
+      describe('#login(email, password, name)', function(){
+        it('invokes auth.login with email, password, name', function(){
+          controller.login();
 
-        expect(controller.errorMessage).toEqual(error.message);
-      }));
+          expect(auth.login).toHaveBeenCalledWith(email, password, name);
+        });
+        it('goes to home state after success', inject(function($rootScope){
+          controller.login();
+          deferred.resolve();
+          $rootScope.$apply();
+
+          expect($state.go).toHaveBeenCalledWith('home');
+        }));
+        it('sets error message if error', inject(function($rootScope){
+          var error = { message: 'the-error'};
+          controller.login();
+          deferred.reject(error);
+          $rootScope.$apply();
+
+          expect(controller.errorMessage).toEqual(error.message);
+        }));
+
+      });
+
 
     });
 

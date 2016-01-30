@@ -13,7 +13,13 @@
 
     var vm = this;
     vm.registerAndLogin = function() {
-      auth.registerAndLogin(vm.email, vm.password, vm.name)
+      delegateToAuth('registerAndLogin');
+    }
+    vm.login = function() {
+      delegateToAuth('login');
+    }
+    function delegateToAuth (methodName) {
+      auth[methodName](vm.email, vm.password, vm.name)
         .then(function() {
           $state.go('home');
         })
