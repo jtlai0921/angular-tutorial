@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  fdescribe('Service AuthService', function(){
+  describe('Service AuthService', function(){
     var firebaseRef, auth;
     var $firebaseAuth;
     var firebaseAuthObject;
@@ -38,7 +38,7 @@
       });
     });
 
-    describe('registerAndLogin(email, password, name)', function(){
+    describe('Login Behaviors', function(){
       var email = 'test@test.com',
           password = 'the-secret',
           name = 'user name';
@@ -54,34 +54,72 @@
         firebaseAuthObject.$authWithPassword = function() { return authWithPasswordDeferred.promise; }
       }));
 
-      it('invokes $createUser with email and password', function(){
-        spyOn(firebaseAuthObject, '$createUser').and.callThrough();
-        auth.registerAndLogin(email, password, name);
-        expect(firebaseAuthObject.$createUser)
-          .toHaveBeenCalledWith({email: email, password: password})
+      describe('#registerAndLogin(email, password, name)', function(){
+        it('invokes $createUser with email and password', function(){
+          spyOn(firebaseAuthObject, '$createUser').and.callThrough();
+          auth.registerAndLogin(email, password, name);
+          expect(firebaseAuthObject.$createUser)
+            .toHaveBeenCalledWith({email: email, password: password})
+        });
+
+        it('invokes $authWithPassword after creating user success', function(){
+          spyOn(firebaseAuthObject, '$authWithPassword').and.callThrough();
+          auth.registerAndLogin(email, password, name);
+          createUserDeferred.resolve({});
+          $rootScope.$apply();
+
+          expect(firebaseAuthObject.$authWithPassword)
+            .toHaveBeenCalledWith({email: email, password: password})
+        });
+
+        it('resolve returned promise after auth success', function(){
+          var onSuccess = jasmine.createSpy();
+          var promise = auth.registerAndLogin(email, password, name);
+
+          promise.then(onSuccess);
+          createUserDeferred.resolve({});
+          authWithPasswordDeferred.resolve({});
+          $rootScope.$apply();
+
+          expect(onSuccess).toHaveBeenCalled();
+        });
+
+        it('sets name on child node it is given', function(){
+          auth.registerAndLogin(email, password, name);
+
+          createUserDeferred.resolve({});
+          authWithPasswordDeferred.resolve({ uid: 'the-uid' });
+          $rootScope.$apply();
+          expect(refChild.set).toHaveBeenCalledWith({ name: name });
+        });
       });
 
-      it('invokes $authWithPassword after creating user success', function(){
-        spyOn(firebaseAuthObject, '$authWithPassword').and.callThrough();
-        auth.registerAndLogin(email, password, name);
-        createUserDeferred.resolve({});
-        $rootScope.$apply();
+      describe('#login(email, password, name)', function(){
+        it('invokes $authWithPassword after creating user success', function(){
+          spyOn(firebaseAuthObject, '$authWithPassword').and.callThrough();
+          auth.login(email, password, name);
 
-        expect(firebaseAuthObject.$authWithPassword)
-          .toHaveBeenCalledWith({email: email, password: password})
+          expect(firebaseAuthObject.$authWithPassword)
+            .toHaveBeenCalledWith({email: email, password: password})
+        });
+        it('resolves returned promise after login success', function(){
+          var onSuccess = jasmine.createSpy();
+          var promise = auth.login(email, password, name);
+          promise.then(onSuccess);
+
+          authWithPasswordDeferred.resolve({ uid: 'the-uid' });
+          $rootScope.$apply();
+          expect(onSuccess).toHaveBeenCalled();
+        });
+        it('sets name on child node if it is given', function(){
+          auth.login(email, password, name);
+
+          authWithPasswordDeferred.resolve({ uid: 'the-uid' });
+          $rootScope.$apply();
+          expect(refChild.set).toHaveBeenCalledWith({ name: name });
+        });
       });
 
-      it('resolve returned promise after auth success', function(){
-        var onSuccess = jasmine.createSpy();
-        var promise = auth.registerAndLogin(email, password, name);
-
-        promise.then(onSuccess);
-        createUserDeferred.resolve({});
-        authWithPasswordDeferred.resolve({});
-        $rootScope.$apply();
-
-        expect(onSuccess).toHaveBeenCalled();
-      });
 
     });
   });
