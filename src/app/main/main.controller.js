@@ -6,8 +6,11 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, auth) {
-    console.log(auth.isLoggedIn());
+  function MainController($state, $timeout, webDevTec, toastr, auth) {
+    if (!auth.isLoggedIn()) {
+      $state.go('auth');
+      return;
+    }
     var vm = this;
 
     vm.awesomeThings = [];
