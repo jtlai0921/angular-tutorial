@@ -12,8 +12,8 @@
     vm.setCurrent = function(user) {
       chatData.setCurrent(user.uid);
     };
-    vm.getCurrent = function() {
-      return chatData.getCurrent();
+    vm.getCurrentUser = function() {
+      return chatData.getCurrentUser();
     }
   }
 }());

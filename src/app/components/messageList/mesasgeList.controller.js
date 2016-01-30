@@ -7,7 +7,8 @@
   /*@ngInject*/
   function MessageListController (chatData) {
     var vm = this;
-    vm.getChat = function() {
+    vm.getCurrentUser = function() {
+      return chatData.getCurrentUser();
     }
 
     vm.getMessages = function() {

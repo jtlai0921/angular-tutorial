@@ -23,7 +23,11 @@
       if (users.length) {
         toReturn.setCurrent(users[0].uid);
       }
-    })
+    });
+
+    function findUser (uid) {
+      return _.find(users, function(u) { return u.uid === uid });
+    }
 
     var toReturn = {
       getUsers: function() {
@@ -33,14 +37,14 @@
         return messages;
       },
       setCurrent: function setCurrent(uid) {
-        if ( _.find(users, function(u) { return u.uid === uid }) ) {
+        if ( findUser(uid) ) {
           currentUserId = uid;
           messages = $firebaseArray(firebaseRef.child('messages')
                                            .child(chatIdWith(currentUserId)));
         }
       },
-      getCurrent: function() {
-        return currentUserId;
+      getCurrentUser: function() {
+        return findUser(currentUserId);
       },
 
       sendChat: function(message) {

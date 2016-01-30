@@ -57,7 +57,7 @@
           inject(function(chatData) {
             chatData.setCurrent('uid-1');
 
-            expect(chatData.getCurrent()).toEqual('uid-1');
+            expect(chatData.getCurrentUser()).toEqual({ uid: 'uid-1' });
           });
         });
         it('fetches messages of composit uid', function(){
