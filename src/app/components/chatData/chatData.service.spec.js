@@ -2,12 +2,13 @@
   'use strict';
 
   describe('service chatData', function() {
-    var chatData;
+    var chatData, _;
 
     beforeEach(module('angularTutorial'));
 
-    beforeEach(inject(function(_chatData_) {
+    beforeEach(inject(function(_chatData_, ___) {
       chatData = _chatData_;
+      _ = ___;
     }));
 
     it('should be registered', function(){
@@ -77,5 +78,19 @@
         expect(misgivenChat.current).toEqual(undefined);
       });
     });
+
+    describe('#sendChat(message)', function(){
+      var chat;
+      beforeEach(function(){
+        chat = chatData.getData()[0];
+        chatData.setCurrent(chat);
+      });
+      it('push chat message into current user', function(){
+        chatData.sendChat('hello');
+
+        expect(_.last(chat.messages).content).toEqual('hello');
+      });
+    });
+
   });
 })();
