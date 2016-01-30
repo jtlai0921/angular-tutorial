@@ -1,8 +1,8 @@
 (function() {
   'use strict';
 
-  fdescribe('service chatData', function() {
-    var chatData, firebaseRef, auth;
+  describe('service chatData', function() {
+    var firebaseRef, auth, userLoadedDeferred;
     var usersFbArray, usersRef, messagesFbArray, messagesRef;
 
     var user1 = { uid: 'uid-1' },
@@ -24,9 +24,11 @@
       return;
     }));
 
-    beforeEach(inject(function(_firebaseRef_, _auth_) {
+    beforeEach(inject(function(_firebaseRef_, _auth_, $q) {
       firebaseRef = _firebaseRef_;
       auth = _auth_;
+      userLoadedDeferred = $q.defer();
+      usersFbArray.$loaded = function() { return userLoadedDeferred.promise; }
     }));
 
     beforeEach(function(){
@@ -36,17 +38,14 @@
       spyOn(auth, 'getUid').and.returnValue('my-uid');
     });
 
-    it('should be registered', function(){
-      expect(chatData).not.toEqual(null);
-    });
-
     describe('#getUsers()', function(){
       it('returns a firebase array of `users` path', function(){
         inject(function(chatData) {
           var users = chatData.getUsers();
 
           expect(firebaseRef.child).toHaveBeenCalledWith('users');
-          expect(users).toEqual([user1, user2]);
+          expect(users[0]).toEqual(user1);
+          expect(users[1]).toEqual(user2);
         })
       });
     });

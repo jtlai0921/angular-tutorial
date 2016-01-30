@@ -18,16 +18,21 @@
     var currentUserId = null;
 
     $scope.users = $firebaseArray(firebaseRef.child('users'));
+    $scope.users.$loaded().then(function(users) {
+      if (users.length) {
+        toReturn.setCurrent(users[0].uid);
+      }
+    })
     $scope.messages = [];
 
-    return {
+    var toReturn = {
       getUsers: function() {
         return $scope.users;
       },
       getMessages: function() {
         return $scope.messages;
       },
-      setCurrent: function(uid) {
+      setCurrent: function setCurrent(uid) {
         if ( _.find($scope.users, function(u) { return u.uid === uid }) ) {
           currentUserId = uid;
           $scope.messages = $firebaseArray(firebaseRef.child('messages')
@@ -50,5 +55,6 @@
         });
       }
     };
+    return toReturn;
   }
 }());

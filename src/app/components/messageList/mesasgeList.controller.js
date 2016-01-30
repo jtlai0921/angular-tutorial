@@ -8,7 +8,7 @@
   function MessageListController (chatData, _) {
     var vm = this;
     vm.getChat = function() {
-      return _.find(chatData.getData(), function(c) { return c.current === true; });
+      // return _.find(chatData.getData(), function(c) { return c.current === true; });
     }
 
     vm.getMessages = function() {
