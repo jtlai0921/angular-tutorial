@@ -90,7 +90,7 @@
           createUserDeferred.resolve({});
           authWithPasswordDeferred.resolve({ uid: 'the-uid' });
           $rootScope.$apply();
-          expect(refChild.set).toHaveBeenCalledWith({ name: name });
+          expect(refChild.set).toHaveBeenCalledWith({ name: name, uid: 'the-uid' });
         });
       });
 
@@ -116,7 +116,7 @@
 
           authWithPasswordDeferred.resolve({ uid: 'the-uid' });
           $rootScope.$apply();
-          expect(refChild.set).toHaveBeenCalledWith({ name: name });
+          expect(refChild.set).toHaveBeenCalledWith({ name: name, uid: 'the-uid' });
         });
       });
 
