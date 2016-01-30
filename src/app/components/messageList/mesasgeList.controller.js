@@ -5,15 +5,14 @@
     .controller('MessageListController', MessageListController);
 
   /*@ngInject*/
-  function MessageListController (chatData, _) {
+  function MessageListController (chatData) {
     var vm = this;
-    vm.getChat = function() {
-      return _.find(chatData.getData(), function(c) { return c.current === true; });
+    vm.getCurrentUser = function() {
+      return chatData.getCurrentUser();
     }
 
     vm.getMessages = function() {
-      var chat = vm.getChat();
-      return chat ? chat.messages : [];
+      return chatData.getMessages();
     }
   }
 }());

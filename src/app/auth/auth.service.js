@@ -21,7 +21,9 @@
                       return auth.$authWithPassword(params);
                     })
                     .then(function(authData) {
-                      return ref.child('users').child(authData.uid).set({ name: name })
+                        ref.child('users')
+                          .child(authData.uid)
+                          .set({ name: name || email, uid: authData.uid })
                     });
       return promise;
     }
@@ -32,15 +34,28 @@
 
       var promise = auth.$authWithPassword(params)
                         .then(function(authData) {
-                          return ref.child('users').child(authData.uid).set({ name: name })
+                          if (name) {
+                            ref.child('users')
+                              .child(authData.uid)
+                              .set({ name: name, uid: authData.uid })
+                          }
                         });
       return promise;
+    }
+
+    function getUid () {
+      if ( isLoggedIn() ) {
+        return firebaseRef.getAuth().uid;
+      } else {
+        return null;
+      }
     }
 
     return {
       isLoggedIn: isLoggedIn,
       registerAndLogin: registerAndLogin,
-      login: login
+      login: login,
+      getUid: getUid
     };
   }
 }());

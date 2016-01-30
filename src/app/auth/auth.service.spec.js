@@ -90,7 +90,7 @@
           createUserDeferred.resolve({});
           authWithPasswordDeferred.resolve({ uid: 'the-uid' });
           $rootScope.$apply();
-          expect(refChild.set).toHaveBeenCalledWith({ name: name });
+          expect(refChild.set).toHaveBeenCalledWith({ name: name, uid: 'the-uid' });
         });
       });
 
@@ -116,7 +116,18 @@
 
           authWithPasswordDeferred.resolve({ uid: 'the-uid' });
           $rootScope.$apply();
-          expect(refChild.set).toHaveBeenCalledWith({ name: name });
+          expect(refChild.set).toHaveBeenCalledWith({ name: name, uid: 'the-uid' });
+        });
+      });
+
+      describe('#getUid()', function(){
+        it('returns getAuth().uid if logged in already', function(){
+          spyOn(firebaseRef, 'getAuth').and.returnValue({ uid: 'the-uid' });
+          expect(auth.getUid()).toEqual('the-uid');
+        });
+        it('returns null if user is not logged in yet', function(){
+          spyOn(firebaseRef, 'getAuth').and.returnValue(null);
+          expect(auth.getUid()).toEqual(null);
         });
       });
 

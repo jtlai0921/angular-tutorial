@@ -1,5 +1,5 @@
 <div class="message-list">
-  <h2>Message With {{ messageListCtrl.getChat().name }}</h2>
+  <h2>Message With {{ messageListCtrl.getCurrentUser().name }}</h2>
   <div class="message-list__messages">
     <div ng-repeat="message in messageListCtrl.getMessages()">
       {{ message.content }}
