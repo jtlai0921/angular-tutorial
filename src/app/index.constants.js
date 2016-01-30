@@ -6,6 +6,7 @@
     .module('angularTutorial')
     .constant('malarkey', malarkey)
     .constant('_', _)
+    .constant('firebaseEndpoint', 'https://cm-angular-chat.firebaseio.com')
     .constant('moment', moment);
 
 })();
