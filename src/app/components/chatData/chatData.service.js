@@ -40,6 +40,15 @@
       }
     ];
 
+    function currentChat () {
+      return _.find(data, function(d) {
+        return d.current === true;
+      });
+    }
+    function getNow () {
+      return new Date().getTime();
+    }
+
     return {
       getData: function() {
         return data;
@@ -53,6 +62,10 @@
           matchedChat.current = true;
         }
 
+      },
+      sendChat: function(message) {
+        var chat = currentChat();
+        chat.messages.push({ content: message, sentAt: getNow(), fromMe: true });
       }
     };
   }
