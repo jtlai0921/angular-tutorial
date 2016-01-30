@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  fdescribe('controllers', function(){
+  describe('controllers', function(){
     var auth, $state, $controller;
 
     beforeEach(module('angularTutorial'));

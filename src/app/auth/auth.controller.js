@@ -4,13 +4,21 @@
   angular.module('angularTutorial')
     .controller('AuthController', AuthController);
 
+  /** @ngInject */
   function AuthController ($state, auth) {
+    if (auth.isLoggedIn()) {
+      $state.go('home');
+      return;
+    }
+
     var vm = this;
     vm.submit = function() {
       auth.registerAndLogin(vm.email, vm.password, vm.name)
-        .then($state.go('home'))
+        .then(function() {
+          $state.go('home');
+        })
         .catch(function(err) {
-          console.log('error!', err);
+          vm.errorMessage = err;
         })
     }
   }
