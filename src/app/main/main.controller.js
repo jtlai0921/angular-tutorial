@@ -6,10 +6,6 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($state, auth) {
-    if (!auth.isLoggedIn()) {
-      $state.go('auth');
-      return;
-    }
+  function MainController() {
   }
 })();

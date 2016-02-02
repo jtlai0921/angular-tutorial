@@ -5,7 +5,7 @@
     .factory('chatData', chatDataFactory);
 
   /** @ngInject */
-  function chatDataFactory (_, auth) {
+  function chatDataFactory (_) {
     var users, messages;
     var messagePool;
     var currentUserId = null;
@@ -22,7 +22,7 @@
         return {
           content: '[message-with ' + u.name + ']: content' + messageId,
           sendAt: getNow(),
-          sender: auth.getUid(),
+          sender: 'my-user-id',
           receiver: u.uid
         }
       });
@@ -60,7 +60,7 @@
         messages.push({
           content: message,
           sentAt: getNow(),
-          sender: auth.getUid(),
+          sender: 'my-user-id',
           receiver: currentUserId
         });
       }

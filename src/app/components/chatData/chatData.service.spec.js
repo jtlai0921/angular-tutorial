@@ -2,17 +2,7 @@
   'use strict';
 
   describe('service chatData', function() {
-    var auth;
-
     beforeEach(module('angularTutorial'));
-
-    beforeEach(inject(function(_auth_) {
-      auth = _auth_;
-    }));
-
-    beforeEach(function(){
-      spyOn(auth, 'getUid').and.returnValue('my-uid');
-    });
 
     describe('#getUsers()', function(){
       it('returns an array containing users with `uid`, `name` keys', function(){
