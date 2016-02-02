@@ -1,8 +1,7 @@
 <ul class="friend-list">
   <li class="friend-list__friend"
-    ng-click="friendListCtrl.setCurrent(user)"
     ng-class="{ 'friend-list__friend--current': friendListCtrl.getCurrentUser().uid === user.uid }"
     ng-repeat="user in friendListCtrl.users">
-    {{ user.name }}
+    <a ng-href="#/{{user.uid}}">{{ user.name }}</a>
   </li>
 </ul>
