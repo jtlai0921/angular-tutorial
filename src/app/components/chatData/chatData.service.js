@@ -5,7 +5,7 @@
     .factory('chatData', chatDataFactory);
 
   /** @ngInject */
-  function chatDataFactory (_, firebaseRef, $firebaseArray, auth) {
+  function chatDataFactory (_, firebaseRef, $firebaseArray, auth, $stateParams, $rootScope) {
     var users, messages;
     messages = [];
 
@@ -16,7 +16,13 @@
     function chatIdWith (uid) {
       return [uid, auth.getUid()].sort().reverse().join('---');
     }
-    var currentUserId = null;
+    var currentUserId = $stateParams.uid;
+
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+      if (toState.name === 'home.chat') {
+        toReturn.setCurrent(toParams.uid);
+      }
+    });
 
     users = $firebaseArray(firebaseRef.child('users'));
     users.$loaded().then(function(users) {
