@@ -5,25 +5,32 @@
     .factory('chatData', chatDataFactory);
 
   /** @ngInject */
-  function chatDataFactory (_, firebaseRef, $firebaseArray, auth) {
+  function chatDataFactory (_, auth) {
     var users, messages;
-    messages = [];
+    var messagePool;
+    var currentUserId = null;
+
+    users = _.map([1,2,3,4,5], function(id) {
+      return {
+        uid: 'the-user-id-' + id,
+        name: 'the-name-of-user-' + id
+      }
+    });
+    messagePool = {};
+    _.each(users, function(u) {
+      messagePool[u.uid] = _.map([1,2,3], function(messageId) {
+        return {
+          content: '[message-with ' + u.name + ']: content' + messageId,
+          sendAt: getNow(),
+          sender: auth.getUid(),
+          receiver: u.uid
+        }
+      });
+    });
 
     function getNow () {
       return new Date().getTime();
     }
-
-    function chatIdWith (uid) {
-      return [uid, auth.getUid()].sort().reverse().join('---');
-    }
-    var currentUserId = null;
-
-    users = $firebaseArray(firebaseRef.child('users'));
-    users.$loaded().then(function(users) {
-      if (users.length) {
-        toReturn.setCurrent(users[0].uid);
-      }
-    });
 
     function findUser (uid) {
       return _.find(users, function(u) { return u.uid === uid });
@@ -39,8 +46,7 @@
       setCurrent: function setCurrent(uid) {
         if ( findUser(uid) ) {
           currentUserId = uid;
-          messages = $firebaseArray(firebaseRef.child('messages')
-                                           .child(chatIdWith(currentUserId)));
+          messages = messagePool[uid];
         }
       },
       getCurrentUser: function() {
@@ -51,7 +57,7 @@
         if (!currentUserId) {
           return;
         }
-        messages.$add({
+        messages.push({
           content: message,
           sentAt: getNow(),
           sender: auth.getUid(),
