@@ -21,7 +21,7 @@
         controller: 'MainController',
         controllerAs: 'main'
       })
-      .state('home.emtpyChat', {
+      .state('home.emptyChat', {
         url: '',
         controller: 'EmptyChatController',
         controllerAs: 'emptyChatController'

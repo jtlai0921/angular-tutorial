@@ -7,7 +7,7 @@
   /** @ngInject */
   function AuthController ($state, auth) {
     if (auth.isLoggedIn()) {
-      $state.go('home');
+      $state.go('home.emptyChat');
       return;
     }
 
@@ -21,7 +21,7 @@
     function delegateToAuth (methodName) {
       auth[methodName](vm.email, vm.password, vm.name)
         .then(function() {
-          $state.go('home');
+          $state.go('home.emptyChat');
         })
         .catch(function(err) {
           vm.errorMessage = err.message;
