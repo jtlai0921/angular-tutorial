@@ -3,7 +3,7 @@
 
   describe('service chatData', function() {
     var firebaseRef, auth, userLoadedDeferred;
-    var usersFbArray, usersRef, messagesFbArray, messagesRef, $stateParams;
+    var usersFbArray, usersRef, messagesFbArray, messagesRef, $stateParams, $state;
 
     var user1 = { uid: 'uid-1' },
       user2 = { uid: 'uid-2' };
@@ -24,7 +24,8 @@
       return;
     }));
 
-    beforeEach(inject(function(_firebaseRef_, _auth_, $q, _$stateParams_) {
+    beforeEach(inject(function(_firebaseRef_, _auth_, $q, _$stateParams_, _$state_) {
+      $state = _$state_;
       $stateParams = _$stateParams_;
       firebaseRef = _firebaseRef_;
       auth = _auth_;
@@ -53,6 +54,16 @@
       $rootScope.$digest();
       expect(chatData.getCurrentUser()).toEqual(user1);
     }));
+
+    it('routes to first user on data loaded if not in any uid state', function(){
+      $stateParams.uid = null;
+      spyOn($state, 'go');
+      inject(function(chatData, $rootScope) {
+        userLoadedDeferred.resolve([ user1, user2 ]);
+        $rootScope.$digest();
+        expect($state.go).toHaveBeenCalledWith('home.chat', { uid: user1.uid })
+      });
+    });
 
     describe('#getUsers()', function(){
       it('returns a firebase array of `users` path', function(){
