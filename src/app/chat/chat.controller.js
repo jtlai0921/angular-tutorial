@@ -3,7 +3,7 @@
     .controller('ChatController', ChatController);
 
   /**@ngInject*/
-  function ChatController (chatData, $state, $stateParams) {
+  function ChatController (chatData, $stateParams) {
     chatData.onUserLoaded().then(function() {
       chatData.setCurrent($stateParams.uid);
     });
