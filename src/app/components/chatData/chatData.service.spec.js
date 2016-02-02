@@ -10,49 +10,23 @@
           var users = chatData.getUsers();
 
           expect(users instanceof Array).toEqual(true);
+          users.forEach(function(u) {
+            expect(u.uid).not.toBeUndefined();
+            expect(u.name).not.toBeUndefined();
+          })
         })
       });
     });
 
-
-    describe('Current chat behaviors', function(){
-      describe('#setCurrent(uid)', function(){
-        it('sets current user with uid', function(){
-          inject(function(chatData) {
-            var uid = chatData.getUsers()[0].uid;
-            chatData.setCurrent(uid);
-
-            expect(chatData.getCurrentUser().uid).toEqual(uid);
-          });
-        });
-        it('makes `getMessages()` return messages of the user', function(){
-          inject(function(chatData) {
-            var messages;
-            var user = chatData.getUsers()[0];
-            chatData.setCurrent(user.uid);
-
-            messages = chatData.getMessages();
-
-            messages.forEach(function(msg) {
-              expect(msg.content.indexOf('[message-with ' + user.name + ']')).not.toEqual('-1');
-            })
-          });
-        });
-      });
-    });
-
-    describe('#sendChat(message)', function(){
-      it('pushes a message into current message array', function(){
+    describe('#getMessages()', function(){
+      it('returns an array of messages with key `content`', function(){
         inject(function(chatData) {
-          var messages;
-          var user = chatData.getUsers()[0];
-          chatData.setCurrent(user.uid);
-          chatData.sendChat('the-message');
-
-          messages = chatData.getMessages();
-
-          expect(messages[messages.length - 1].content).toEqual('the-message');
-        })
+          var messages = chatData.getMessages();
+          expect(messages instanceof Array).toEqual(true);
+          messages.forEach(function(m) {
+            expect(m.content).not.toBeUndefined();
+          });
+        });
       });
     });
 
