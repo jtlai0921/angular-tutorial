@@ -16,12 +16,20 @@
       })
       .state('home', {
         url: '/',
+        abstract: true,
         templateUrl: 'app/main/main.html',
         controller: 'MainController',
         controllerAs: 'main'
       })
+      .state('home.emtpyChat', {
+        url: '',
+        controller: 'EmptyChatController',
+        controllerAs: 'emptyChatController'
+      })
       .state('home.chat', {
         url: ':uid',
+        controller: 'ChatController',
+        controllerAs: 'chatController',
         templateUrl: 'app/chat/chat.html'
       });
 
