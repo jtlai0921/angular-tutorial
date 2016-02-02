@@ -24,15 +24,5 @@
       });
     });
 
-    describe('#setCurrnet(uid)', function(){
-      it('invokes `setCurrent` on chatData with given user', function(){
-        var user = { uid: 'the-uid' };
-        spyOn(chatData, 'setCurrent');
-        controller.setCurrent(user);
-
-        expect(chatData.setCurrent).toHaveBeenCalledWith(user.uid);
-      });
-    });
-
   });
 })();

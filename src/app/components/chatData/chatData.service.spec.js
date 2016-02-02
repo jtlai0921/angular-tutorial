@@ -3,7 +3,7 @@
 
   describe('service chatData', function() {
     var firebaseRef, auth, userLoadedDeferred;
-    var usersFbArray, usersRef, messagesFbArray, messagesRef;
+    var usersFbArray, usersRef, messagesFbArray, messagesRef, $stateParams;
 
     var user1 = { uid: 'uid-1' },
       user2 = { uid: 'uid-2' };
@@ -24,7 +24,8 @@
       return;
     }));
 
-    beforeEach(inject(function(_firebaseRef_, _auth_, $q) {
+    beforeEach(inject(function(_firebaseRef_, _auth_, $q, _$stateParams_) {
+      $stateParams = _$stateParams_;
       firebaseRef = _firebaseRef_;
       auth = _auth_;
       userLoadedDeferred = $q.defer();
@@ -37,6 +38,21 @@
       });
       spyOn(auth, 'getUid').and.returnValue('my-uid');
     });
+
+    it('sets initial current user as stateParams uid', function(){
+      $stateParams.uid = 'uid-2';
+      inject(function(chatData) {
+        expect(chatData.getCurrentUser()).toEqual(user2);
+      });
+    });
+
+    it('update current user current user when state change to `home.chat`',
+       inject(function($rootScope, chatData){
+
+      $rootScope.$emit('$stateChangeSuccess', { name: 'home.chat' }, { uid: 'uid-1' })
+      $rootScope.$digest();
+      expect(chatData.getCurrentUser()).toEqual(user1);
+    }));
 
     describe('#getUsers()', function(){
       it('returns a firebase array of `users` path', function(){

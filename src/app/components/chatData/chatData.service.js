@@ -18,11 +18,12 @@
     }
     var currentUserId = $stateParams.uid;
 
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+    var deregister = $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams){
       if (toState.name === 'home.chat') {
         toReturn.setCurrent(toParams.uid);
       }
     });
+    $rootScope.$on('$destroy', deregister);
 
     users = $firebaseArray(firebaseRef.child('users'));
     users.$loaded().then(function(users) {
