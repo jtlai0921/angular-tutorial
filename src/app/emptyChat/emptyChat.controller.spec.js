@@ -13,8 +13,11 @@
       $controller = _$controller_;
     }));
 
-    it('goes to the first user state on user loaded', inject(function($rootScope){
+    it('goes to the first user state on user loaded if user is logged in',
+       inject(function($rootScope, auth){
+
       var users = [ { uid: 'uid-1' }, { uid: 'uid2' } ];
+      spyOn(auth, 'isLoggedIn').and.returnValue(true);
       spyOn($state, 'go');
       spyOn(chatData, 'onUserLoaded').and.returnValue(usersLoadedDeffered.promise);
 

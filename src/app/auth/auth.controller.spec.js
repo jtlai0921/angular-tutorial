@@ -12,11 +12,11 @@
       auth = _auth_;
     }));
 
-    it('goes to home state if user is logged', function(){
+    it('goes to emptyChat state state if user is logged', function(){
       spyOn($state, 'go');
       spyOn(auth, 'isLoggedIn').and.returnValue(true);
       $controller('AuthController');
-      expect($state.go).toHaveBeenCalledWith('home');
+      expect($state.go).toHaveBeenCalledWith('home.emptyChat');
     });
 
     describe('#registerAndLogin()', function(){
@@ -48,12 +48,12 @@
 
           expect(auth.registerAndLogin).toHaveBeenCalledWith(email, password, name);
         });
-        it('goes to home state after success', inject(function($rootScope){
+        it('goes to emptyChat state after success', inject(function($rootScope){
           controller.registerAndLogin();
           deferred.resolve();
           $rootScope.$apply();
 
-          expect($state.go).toHaveBeenCalledWith('home');
+          expect($state.go).toHaveBeenCalledWith('home.emptyChat');
         }));
         it('sets error message if error', inject(function($rootScope){
           var error = { message: 'the-error'};
@@ -71,12 +71,12 @@
 
           expect(auth.login).toHaveBeenCalledWith(email, password, name);
         });
-        it('goes to home state after success', inject(function($rootScope){
+        it('goes to home.emptyChat state after success', inject(function($rootScope){
           controller.login();
           deferred.resolve();
           $rootScope.$apply();
 
-          expect($state.go).toHaveBeenCalledWith('home');
+          expect($state.go).toHaveBeenCalledWith('home.emptyChat');
         }));
         it('sets error message if error', inject(function($rootScope){
           var error = { message: 'the-error'};

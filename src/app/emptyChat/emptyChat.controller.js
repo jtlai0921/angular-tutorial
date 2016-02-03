@@ -3,10 +3,12 @@
     .controller('EmptyChatController', EmptyChatController);
 
   /**@ngInject*/
-  function EmptyChatController (chatData, $state) {
+  function EmptyChatController (chatData, $state, auth) {
     chatData.onUserLoaded().then(function(users) {
-      if (users.length) {
-        $state.go('home.chat', { uid: users[0].uid });
+      if (auth.isLoggedIn()) {
+        if (users.length) {
+          $state.go('home.chat', { uid: users[0].uid });
+        }
       }
     })
   }
