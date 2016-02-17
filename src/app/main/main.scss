@@ -1,4 +1,19 @@
-.right-block {
-  height: calc(100vh - 60px);
-  position: relative;
+.chatroom {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  height: 100vh;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+
+  .chatroom__friend-list {
+    width: 280px;
+  }
+  .chatroom__right-side {
+    flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+  }  
 }
+
