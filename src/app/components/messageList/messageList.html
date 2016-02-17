@@ -1,7 +1,14 @@
 <div class="message-list">
-  <h2>Message With {{ messageListCtrl.getCurrentUser().name }}</h2>
+  <div class="message-list__receiver">
+    <span class="message-list__receiver--symbol">
+      &#64;
+    </span>
+    <span class="message-list__receiver--name">
+      {{ messageListCtrl.getCurrentUser().name }}
+    </span>
+  </div>
   <div class="message-list__messages">
-    <div ng-repeat="message in messageListCtrl.getMessages()">
+    <div class="message-list__messages--content" ng-repeat="message in messageListCtrl.getMessages()">
       {{ message.content }}
     </div>
   </div>

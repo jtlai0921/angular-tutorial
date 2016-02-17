@@ -1,10 +1,39 @@
 .message-list {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  height: calc(100vh - 70px);
+
+  &__receiver {
+    padding: 20px 30px 0px 30px;
+    border-bottom: 1px solid #E0E1DD;
+    font-size: 28px;
+    height: 80px;
+
+    &--symbol {
+      color: #8D99AE;
+    }
+    
+    &--name {
+      color: #2B2D42;
+      font-weight: bold;
+    }
+  }
   &__messages {
-    position: absolute;
-    bottom: 60px;
-    max-height: calc(100vh - 210px);
+    flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    padding: 20px 30px;
     overflow-y: scroll;
-    width: 100%;
-    font-size: 18px;
+
+    &--content{
+      font-size: 20px;
+      line-height: 28px;
+      color: #0D1B2A;
+      margin-bottom: 20px;
+    }
   }
 }
