@@ -1,4 +1,7 @@
 <ul class="friend-list">
+  <li class="friend-list__header">
+    Direct Messages&nbsp;&#40;{{friendListCtrl.users.length}}&#41;
+  </li>
   <li class="friend-list__friend"
     ng-class="{ 'friend-list__friend--current': friendListCtrl.getCurrentUser().uid === user.uid }"
     ng-repeat="user in friendListCtrl.users">
