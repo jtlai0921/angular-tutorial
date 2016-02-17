@@ -47,5 +47,5 @@ An example of the result of this step can be found [here](https://sample-project
 
 ## Host development environment:
 
-- Install dependencies by `$ npm install`
+- Install dependencies by `$ npm install; bower install`
 - Kick off by `$ gulp serve`
