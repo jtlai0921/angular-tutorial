@@ -6,9 +6,6 @@
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   height: calc(100vh - 70px);
-  height: -webkit-calc(100vh - 70px);
-  height: -moz-calc(100vh - 70px);
-  height: -o-calc(100vh - 70px);
 
   &__receiver {
     padding: 20px 30px 0px 30px;
