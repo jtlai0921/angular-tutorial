@@ -1,23 +1,44 @@
 .auth-form {
-  width: 600px;
   margin: 0 auto;
-  margin-top: 200px;
+  position: absolute;
+  top: 25%;
+  left: 0;
+  right: 0;
+  padding: 40px;
+  max-width: 600px;
+  
   &__input {
-    margin: 0 auto;
+    margin: 0 auto 10px;
     display: block;
-    height: 45px;
     font-size: 20px;
-    padding: 10px;
-    border-radius: 3px;
-    margin-bottom: 10px;
-    border: 1px solid #888;
+    font-weight: 300;
+    padding: 12px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border: 1px solid #c5c5c5;
     width: 100%;
+    -webkit-transition: box-shadow 70ms ease-out,border-color 70ms ease-out;
+    -moz-transition: box-shadow 70ms ease-out,border-color 70ms ease-out;
+    transition: box-shadow 70ms ease-out,border-color 70ms ease-out;
+    &:focus{
+      border-color: #2780f8;
+    }
   }
 
   &__btn {
-    font-size: 18px;
+    font-size: 20px;
+    padding: 14px 32px 16px;
+    background-color: #2ab27b;
+    color: #fff;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    margin-right: 10px;
+
     &:hover {
-      opacity: .7;
+      opacity: .8;
+      color: #fff;
     }
   }
 }
