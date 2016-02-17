@@ -2,6 +2,9 @@
   padding: 0px 30px;
   position: absolute;
   width: calc( 100% - 280px);
+  width: -webkit-calc(100% - 280px);
+  width: -moz-calc(100% - 280px);
+  width: -o-calc(100% - 280px);
   bottom: 20px;
 
   & > input {
